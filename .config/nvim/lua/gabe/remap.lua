@@ -47,12 +47,14 @@ local window_mappings = {
 	{ "<leader>wv", "<C-w>v", desc = "Vertical Split" },
 	{ "<leader>ws", "<C-w>s", desc = "Horizontal Split" },
 	{ "<leader>wt", "<cmd>Neotree<cr>", desc = "Jump to Neotree" },
+	{ "<leader>wc", "<C-w>q", desc = "Close Window" },
 }
 
 which_key.add(window_mappings)
 
 local misc_mappings = {
 	{ "<leader>ef", "<cmd>Neotree reveal<cr>", desc = "Reveal current file" },
+	{ "<leader>ot", "<cmd>terminal<cr>", desc = "Open terminal" },
 }
 
 which_key.add(misc_mappings)
