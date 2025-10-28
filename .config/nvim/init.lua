@@ -1,0 +1,8 @@
+require("gabe.config.lazy")
+require("gabe.config.coc")
+require("gabe.config.bufferline")
+require("gabe.config.nvim-cursorline")
+require("gabe.config.lualine")
+require("gabe.config.conform")
+require("gabe")
+vim.cmd("Neotree show")
