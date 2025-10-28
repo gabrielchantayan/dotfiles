@@ -47,7 +47,7 @@ local window_mappings = {
 	{ "<leader>wv", "<C-w>v", desc = "Vertical Split" },
 	{ "<leader>ws", "<C-w>s", desc = "Horizontal Split" },
 	{ "<leader>wt", "<cmd>Neotree<cr>", desc = "Jump to Neotree" },
-	{ "<leader>wc", "<C-w>q", desc = "Close Window" },
+	{ "<leader>wq", "<C-w>q", desc = "Close Window" },
 }
 
 which_key.add(window_mappings)
