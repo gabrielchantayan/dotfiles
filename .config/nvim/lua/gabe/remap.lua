@@ -54,7 +54,8 @@ which_key.add(window_mappings)
 
 local misc_mappings = {
 	{ "<leader>ef", "<cmd>Neotree reveal<cr>", desc = "Reveal current file" },
-	{ "<leader>ot", "<cmd>terminal<cr>", desc = "Open terminal" },
+	{ "<leader>ot", "<cmd>terminal<cr>i", desc = "Open terminal" },
+	{ "<leader>oc", "<cmd>terminal claude --model claude-haiku-4-5<cr>i", desc = "Open Claude Code" },
 }
 
 which_key.add(misc_mappings)
