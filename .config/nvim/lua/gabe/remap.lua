@@ -19,7 +19,7 @@ local buffer_mappings = {
 	{ "<leader>bn", "<cmd>bnext<cr>", desc = "Next Buffer" },
 	{ "<leader>bp", "<cmd>bprevious<cr>", desc = "Previous Buffer" },
 	{ "<leader>bj", goto_buffer, desc = "Jump to buffer by number" },
-	{ "<leader>q", "<cmd>bdelete<cr>", desc = "Delete Buffer" },
+	{ "<leader>bcc", "<cmd>%bw!<cr><cmd>Neotree<cr><C-w>l", desc = "Close all buffers" },
 }
 
 which_key.add(buffer_mappings)
@@ -44,8 +44,8 @@ local window_mappings = {
 	{ "<leader>wj", "<C-w>j", desc = "Down Window" },
 	{ "<leader>wk", "<C-w>k", desc = "Up Window" },
 	{ "<leader>wl", "<C-w>l", desc = "Right Window" },
-	{ "<leader>wv", "<C-w>v", desc = "Vertical Split" },
-	{ "<leader>ws", "<C-w>s", desc = "Horizontal Split" },
+	{ "<leader>wv", "<C-w>v<C-w>l", desc = "Vertical Split" },
+	{ "<leader>ws", "<C-w>s<C-w>j", desc = "Horizontal Split" },
 	{ "<leader>wt", "<cmd>Neotree<cr>", desc = "Jump to Neotree" },
 	{ "<leader>wq", "<C-w>q", desc = "Close Window" },
 }
