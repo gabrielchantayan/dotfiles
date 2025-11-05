@@ -68,7 +68,9 @@ vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { silent = true })
 
 -- Delete without copying
 vim.keymap.set("n", "dd", '"_dd')
+vim.keymap.set("n", "dw", '"_dw')
 vim.keymap.set("v", "d", '"_d')
+vim.keymap.set("n", "x", '"_x')
 
 -- Yank remap (+y to y)
 vim.keymap.set({ "n", "v" }, "y", '"+y', { desc = "Yank to system clipboard" })
