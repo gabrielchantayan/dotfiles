@@ -56,6 +56,7 @@ local misc_mappings = {
 	{ "<leader>ef", "<cmd>Neotree reveal<cr>", desc = "Reveal current file" },
 	{ "<leader>ot", "<cmd>terminal<cr>i", desc = "Open terminal" },
 	{ "<leader>oc", "<cmd>terminal claude --model claude-haiku-4-5<cr>i", desc = "Open Claude Code" },
+	{ "<leader>oo", "<cmd>terminal codex --model gpt-5-mini<cr>i", desc = "Open Codex" },
 }
 
 which_key.add(misc_mappings)
