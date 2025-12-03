@@ -79,3 +79,4 @@ vim.keymap.set("n", "yy", '"+yy', { desc = "Yank line to system clipboard" })
 
 -- Terminal mode mappings
 vim.keymap.set("t", "<D-S-C-t>", "<C-\\><C-n>", { noremap = true, desc = "Exit terminal mode" })
+vim.keymap.set("t", "<C-i>", "<C-\\><C-n>", { noremap = true, desc = "Exit terminal mode" })
