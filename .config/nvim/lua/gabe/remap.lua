@@ -55,7 +55,7 @@ which_key.add(window_mappings)
 local misc_mappings = {
 	{ "<leader>ef", "<cmd>Neotree reveal<cr>", desc = "Reveal current file" },
 	{ "<leader>ot", "<cmd>terminal<cr>i", desc = "Open terminal" },
-	{ "<leader>oc", "<cmd>terminal claude --model claude-haiku-4-5<cr>i", desc = "Open Claude Code" },
+	{ "<leader>oc", "<cmd>terminal claude<cr>i", desc = "Open Claude Code" },
 	{ "<leader>oo", "<cmd>terminal codex --model gpt-5-mini<cr>i", desc = "Open Codex" },
 }
 
@@ -68,15 +68,16 @@ vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { silent = true })
 vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { silent = true })
 
 -- Delete without copying
-vim.keymap.set("n", "dd", '"_dd')
-vim.keymap.set("n", "dw", '"_dw')
-vim.keymap.set("v", "d", '"_d')
-vim.keymap.set("n", "x", '"_x')
+-- DEPRECATED, using cutlass.nvim instead
+-- vim.keymap.set("n", "dd", '"_dd')
+-- vim.keymap.set("n", "dw", '"_dw')
+-- vim.keymap.set("n", "dW", '"_dW')
+-- vim.keymap.set("v", "d", '"_d')
+-- vim.keymap.set("n", "x", '"_x')
 
 -- Yank remap (+y to y)
 vim.keymap.set({ "n", "v" }, "y", '"+y', { desc = "Yank to system clipboard" })
 vim.keymap.set("n", "yy", '"+yy', { desc = "Yank line to system clipboard" })
 
 -- Terminal mode mappings
-vim.keymap.set("t", "<D-S-C-t>", "<C-\\><C-n>", { noremap = true, desc = "Exit terminal mode" })
-vim.keymap.set("t", "<C-i>", "<C-\\><C-n>", { noremap = true, desc = "Exit terminal mode" })
+vim.keymap.set("t", "<C-k>", "<C-\\><C-n>", { noremap = true, desc = "Exit terminal mode" })
