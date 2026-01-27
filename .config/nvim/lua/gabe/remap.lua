@@ -20,6 +20,7 @@ local buffer_mappings = {
 	{ "<leader>bp", "<cmd>bprevious<cr>", desc = "Previous Buffer" },
 	{ "<leader>bj", goto_buffer, desc = "Jump to buffer by number" },
 	{ "<leader>bcc", "<cmd>%bw!<cr><cmd>Neotree<cr><C-w>l", desc = "Close all buffers" },
+	{ "<leader>ee", "<cmd>e!<cr>", desc = "Refresh current buffer" },
 }
 
 which_key.add(buffer_mappings)
@@ -56,7 +57,7 @@ local misc_mappings = {
 	{ "<leader>ef", "<cmd>Neotree reveal<cr>", desc = "Reveal current file" },
 	{ "<leader>ot", "<cmd>terminal<cr>i", desc = "Open terminal" },
 	{ "<leader>oc", "<cmd>terminal claude<cr>i", desc = "Open Claude Code" },
-	{ "<leader>oo", "<cmd>terminal codex --model gpt-5-mini<cr>i", desc = "Open Codex" },
+	{ "<leader>oo", "<cmd>terminal opencode<cr>i", desc = "Open OpenCode" },
 }
 
 which_key.add(misc_mappings)

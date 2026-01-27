@@ -3,5 +3,7 @@
 
 return {
     "gbprod/cutlass.nvim",
-    opts = {}
+    opts = {
+        exclude = { "nx", "nX", "xx", "xX" },
+    }
 }
