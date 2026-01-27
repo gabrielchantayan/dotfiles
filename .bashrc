@@ -12,3 +12,5 @@ mkcd() {
 # Alias for dotenvs
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
+
+alias claude-mem='/Users/gabe/.bun/bin/bun "/Users/gabe/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
