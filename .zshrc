@@ -25,5 +25,8 @@ export PATH=$PATH:$HOME/go/bin
 export PATH="$HOME/Documents/Programming/cosa/bin:$PATH"
 
 # aliases
-# lg -> lazygit
+## lg -> lazygit
 alias lg='lazygit'
+
+## update-dotfiles $1 -> sh ~/.config/update-dotfiles.sh $1
+alias update-dotfiles='sh ~/.config/update-dotfiles.sh'
