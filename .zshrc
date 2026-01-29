@@ -30,3 +30,6 @@ alias lg='lazygit'
 
 ## update-dotfiles $1 -> sh ~/.config/update-dotfiles.sh $1
 alias update-dotfiles='sh ~/.config/update-dotfiles.sh'
+
+## clauded -> claude --dangerously-skip-permissions
+alias clauded='claude --dangerously-skip-permissions'
