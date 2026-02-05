@@ -15,7 +15,7 @@ end
 local buffer_mappings = {
 	{ "<leader>b", group = "Buffers" },
 	{ "<leader>bb", "<cmd>buffers<cr>", desc = "Buffers" },
-	{ "<leader>bd", "<cmd>bdelete<cr>", desc = "Delete Buffer" },
+	{ "<leader>bd", "<cmd>bdelete!<cr>", desc = "Delete Buffer" },
 	{ "<leader>bn", "<cmd>bnext<cr>", desc = "Next Buffer" },
 	{ "<leader>bp", "<cmd>bprevious<cr>", desc = "Previous Buffer" },
 	{ "<leader>bj", goto_buffer, desc = "Jump to buffer by number" },
@@ -58,6 +58,11 @@ local misc_mappings = {
 	{ "<leader>ot", "<cmd>terminal<cr>i", desc = "Open terminal" },
 	{ "<leader>oc", "<cmd>terminal claude<cr>i", desc = "Open Claude Code" },
 	{ "<leader>oo", "<cmd>terminal opencode<cr>i", desc = "Open OpenCode" },
+	{
+		"<leader>od",
+		"<cmd>terminal claude --dangerously-skip-permissions<cr>i",
+		desc = "Open Claude Code (Dangerously)",
+	},
 }
 
 which_key.add(misc_mappings)
