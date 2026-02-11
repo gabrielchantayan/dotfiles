@@ -16,4 +16,6 @@ config commit -m "update desc"
 config push -u origin main
 ```
 
-<img src="https://1.bp.blogspot.com/-CzqzzBV2tMk/TxBM3ar18MI/AAAAAAAAPm0/6faLPO9BM8w/s1600/i-can-has-cheezburger.jpg" width="60%" alt="i can has cheezburger" title="i can has cheezburger" />
+<p style="text-align: center">
+    <img src="https://1.bp.blogspot.com/-CzqzzBV2tMk/TxBM3ar18MI/AAAAAAAAPm0/6faLPO9BM8w/s1600/i-can-has-cheezburger.jpg" width="30%" alt="i can has cheezburger" title="i can has cheezburger" />
+</p>
