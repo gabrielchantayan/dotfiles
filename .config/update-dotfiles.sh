@@ -16,6 +16,7 @@ echo "Adding items to git"
 /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.bashrc
 /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/update-dotfiles.sh   # Meta, I know.
 /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/README.md
+/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/kitty/kitty.conf
 
 echo "Committing changes"
 /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME commit -m "$COMMIT_MSG"
