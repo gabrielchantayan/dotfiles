@@ -12,6 +12,7 @@ model: opus
 - Git status: !`git status --short`
 - Staged changes: !`git diff --cached --stat`
 - Unstaged changes: !`git diff --stat`
+- Untracked files: !`git ls-files --others --exclude-standard`
 - Recent commits (for style reference): !`git log -5 --oneline`
 
 ## Task
@@ -22,7 +23,7 @@ Create git commit(s) for the current changes, intelligently splitting large chan
 
 1. Check what files have changed using the context above
 2. If there are no changes to commit, inform the user and stop
-3. If there are unstaged changes, stage them with `git add`
+3. If there are unstaged or untracked changes, stage everything with `git add -A`
 4. Calculate metrics:
    - Total file count (staged files)
    - Total line count: `git diff --cached --numstat | awk '{sum+=$1+$2} END {print sum}'`
@@ -76,6 +77,8 @@ Create commit groups ordered by dependency (earlier commits should not depend on
 
 Combine groups if they form a single logical unit. Skip empty groups.
 
+**Completeness invariant**: Every file in `git diff --cached --name-only` must appear in exactly one commit group. After grouping, compare the full staged file list against the grouped file list. If any file is missing from all groups, add it to the most relevant group or create a final `chore: commit remaining changes` group. Show both lists side-by-side before previewing.
+
 #### 3b.3: Preview Commit Plan
 
 Present the plan to the user:
@@ -118,6 +121,10 @@ For each commit in order:
    - **Final commit**: Use `git commit` (allows hooks to run)
 
 If any commit fails, stop and report the error. Do not continue with remaining commits.
+
+#### 3b.6: Post-Execution Verification
+
+After all commits are executed, run `git status --short`. If any changes remain uncommitted (staged or unstaged), immediately commit them with `chore: commit remaining changes` rather than leaving them behind.
 
 ## Rules
 
