@@ -30,6 +30,8 @@ alias config '/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias lg lazygit
 alias update-dotfiles 'sh ~/.config/update-dotfiles.sh'
 alias clauded 'claude --dangerously-skip-permissions'
+function :q; exit; end
+function ':qa!'; exit; end
 
 if status is-interactive
     set -l fish_art \
