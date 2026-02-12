@@ -18,7 +18,6 @@ echo "Adding items to git"
 /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/opencode/skills/
 /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/opencode/AGENTS.md
 /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/opencode/opencode.json
-/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/opencode/package.json
 /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/opencode/plugin/
 
 
