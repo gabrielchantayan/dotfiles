@@ -58,10 +58,11 @@ if status is-interactive
         '><((((˚>' \
         '~><((((°>' \
         '~~><(((°>' \
-        '¸¸.·><((((º>' \
-        '.·´¯`·.><((((°>'
+        '><((((°>'
     if test (random 1 50) -eq 1
         set -g fish_greeting \n"  ,_           ,_"\n"  \\ '-.        ) '."\n"   \\   '.    .'_...\\_"\n"    '._  \\.-' `      `'-."\n"      _> =;           (o )"\n"    .'   /`;-.__ __//,.-'"\n"   /   .'  (/ /`| (/"\n"  /_.-'       \\_/"\n
+    else if test (random 1 250) -eq 1
+        set -g fish_greeting \n"  ><((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((°>"\n"                      the loooooooooooooong fish"\n
     else
         set -g fish_greeting \n"  "$fish_art[(random 1 (count $fish_art))]\n
     end
