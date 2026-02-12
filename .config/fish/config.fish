@@ -84,9 +84,9 @@ if status is-interactive
     else if test (random 1 250) -eq 1
         set -g fish_greeting \n"  ><((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((°>"\n"                      the loooooooooooooong fish"\n
     else if test (random 1 333) -eq 1
-        set -g fish_greeting \n"    ><>   ><>   ><>"\n"  TRIPLE FISH MAYHEM"
+        set -g fish_greeting \n"    ><>   ><>   ><>"\n"  TRIPLE FISH MAYHEM"\n
     else if test (random 1 777) -eq 1
-        set -g fish_greeting \n"     ><777°>"\n"  Lucky Seven!!"
+        set -g fish_greeting \n"     ><777°>"\n"  Lucky Seven!!"\n
     else
         set -g fish_greeting \n"  "$fish_art[(random 1 (count $fish_art))]\n
     end
