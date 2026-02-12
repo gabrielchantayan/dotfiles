@@ -63,6 +63,8 @@ if status is-interactive
         set -g fish_greeting \n"  ,_           ,_"\n"  \\ '-.        ) '."\n"   \\   '.    .'_...\\_"\n"    '._  \\.-' `      `'-."\n"      _> =;           (o )"\n"    .'   /`;-.__ __//,.-'"\n"   /   .'  (/ /`| (/"\n"  /_.-'       \\_/"\n
     else if test (random 1 250) -eq 1
         set -g fish_greeting \n"  ><((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((°>"\n"                      the loooooooooooooong fish"\n
+    else if test (random 1 333) -eq 1
+        set -g fish_greeting \n"    ><>   ><>   ><>"\n"  TRIPLE FISH MAYHEM"
     else
         set -g fish_greeting \n"  "$fish_art[(random 1 (count $fish_art))]\n
     end
