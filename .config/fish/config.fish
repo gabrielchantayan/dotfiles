@@ -60,7 +60,7 @@ if status is-interactive
         '~~><(((°>' \
         '¸¸.·><((((º>' \
         '.·´¯`·.><((((°>'
-    set -g fish_greeting "  "$fish_art[(random 1 (count $fish_art))]
+    set -g fish_greeting \n"  "$fish_art[(random 1 (count $fish_art))]\n
 
     # Minimal monochrome colors
     set -g fish_color_normal normal
