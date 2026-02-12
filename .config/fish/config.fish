@@ -82,7 +82,7 @@ if status is-interactive
     if test (random 1 50) -eq 1
         set -g fish_greeting \n"  ,_           ,_"\n"  \\ '-.        ) '."\n"   \\   '.    .'_...\\_"\n"    '._  \\.-' `      `'-."\n"      _> =;           (o )"\n"    .'   /`;-.__ __//,.-'"\n"   /   .'  (/ /`| (/"\n"  /_.-'       \\_/"\n
     else if test (random 1 250) -eq 1
-        set -g fish_greeting \n"  ><((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((°>"\n"                      the loooooooooooooong fish"\n
+        set -g fish_greeting \n"  ><((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((°>"\n"        the loooooooooooooooooooooooooooooooooooooooooong fish"\n
     else if test (random 1 333) -eq 1
         set -g fish_greeting \n"    ><>   ><>   ><>"\n"  TRIPLE FISH MAYHEM"\n
     else if test (random 1 777) -eq 1
