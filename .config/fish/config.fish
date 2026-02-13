@@ -30,6 +30,7 @@ alias config '/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias lg lazygit
 alias update-dotfiles 'sh ~/.config/update-dotfiles.sh'
 alias clauded 'claude --dangerously-skip-permissions'
+alias tg 'tree --gitignore'
 function :q; exit; end
 function ':qa!'; exit; end
 
