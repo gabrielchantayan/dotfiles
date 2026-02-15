@@ -1,5 +1,5 @@
 ---
-name: workplan
+name: decompose-spec
 description: Break a SPEC.md into parallelizable, agent-ready work packages saved to docs/plans/<feature>/
 argument-hint: <path-to-spec.md>
 ---
@@ -20,9 +20,9 @@ Expected format: `<spec-path>`
 
 **Examples:**
 ```
-/workplan SPEC.md
-/workplan docs/specs/auth-flow.md
-/workplan ./features/dashboard-spec.md
+/decompose-spec SPEC.md
+/decompose-spec docs/specs/auth-flow.md
+/decompose-spec ./features/dashboard-spec.md
 ```
 
 ## Workflow
@@ -68,8 +68,6 @@ Each work package should be:
 - **Testable in isolation** — has its own verification commands
 - **Small enough to review** — one logical unit of work
 - **Large enough to be meaningful** — not a single-line change
-
-**WP cap: 12 maximum.** If analysis suggests more than 12, merge related items. If the feature genuinely requires more, recommend splitting the spec first.
 
 ### Step 4: Infer Dependencies
 
@@ -319,7 +317,6 @@ If the user chooses option 3, you're done.
 | Spec file is empty | Error: "Spec file is empty. Run `/spec-interview` first to generate a spec." |
 | No clear feature name | Ask user for a feature name to use for the directory |
 | Spec too vague for WPs | List what's missing, suggest running `/spec-interview` to flesh it out |
-| >12 WPs needed | Warn user, suggest splitting the spec into sub-features first |
 | `docs/plans/<name>/` already exists | Ask user: overwrite, use a different name, or abort |
 | Circular dependencies detected | Show the cycle, ask user to clarify ordering |
 
@@ -330,5 +327,4 @@ If the user chooses option 3, you're done.
 - Do NOT create WPs for "setup" or "cleanup" unless there's real work (don't pad the count)
 - Do NOT reference other WP files without inlining the relevant context (each WP is self-contained)
 - Do NOT skip codebase exploration — WPs with placeholder paths are useless
-- Do NOT exceed 12 WPs — merge or recommend spec splitting instead
 - Do NOT write files before user approval
