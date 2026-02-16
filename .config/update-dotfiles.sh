@@ -12,6 +12,8 @@ echo "Adding items to git"
 ## Claude
 /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.claude/commands/
 /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.claude/skills/
+/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.claude/settings.json
+/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.claude/statusline.sh
 
 ## OpenCode
 /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/opencode/command/
