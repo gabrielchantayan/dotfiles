@@ -1,3 +1,5 @@
+vim.g.coc_global_extensions = { "coc-go" }
+
 local keyset = vim.keymap.set
 -- Autocomplete
 function _G.check_back_space()

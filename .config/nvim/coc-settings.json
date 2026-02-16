@@ -2,5 +2,19 @@
   "python.analysis.diagnosticSeverityOverrides": {
     "reportMissingImports": "none",
     "reportUnusedImport": "none"
+  },
+  "go.goplsOptions": {
+    "completeUnimported": true,
+    "usePlaceholders": true,
+    "staticcheck": true,
+    "analyses": {
+      "unusedparams": true,
+      "shadow": true
+    }
+  },
+  "go.tags": {
+    "tags": "json",
+    "options": "json=omitempty",
+    "transform": "snakecase"
   }
 }
