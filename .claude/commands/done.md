@@ -28,7 +28,7 @@ Review the full conversation and produce a markdown document with this structure
 ```markdown
 # {Title in Title Case}
 
-**Date:** YYYY-MM-DD
+**Date:** YYYY-MM-DD HH:MM AM/PM
 **Working Directory:** /path/to/project
 **Git Branch:** feature/branch-name
 
@@ -49,12 +49,13 @@ Review the full conversation and produce a markdown document with this structure
 ## Follow-ups
 
 - [ ] Action item 1
-- [ ] Action item 2
+- [!] Important action item
+- [/] Partially completed item
 
 ## Open Questions
 
-- Unresolved question 1
-- Unresolved question 2
+- [?] Unresolved question 1
+- [?] Unresolved question 2
 
 ## Notes
 
@@ -72,6 +73,7 @@ Include links to PRs or issues if they were created during the session.
    /Users/gabe/Documents/Obsidian Vault/handoffs/{project-name}/YYYY-MM-DD {Title in Title Case}.md
    ```
    - `{project-name}` comes from the git repo root directory name, or the current directory name if not in a repo
+   - Strip any leading `.` from the project name (e.g., `.claude` → `claude`, `.config` → `config`)
    - Create the subfolder with `mkdir -p` if it doesn't exist
 
 2. If a file with the same date and title already exists, append a number: `2026-02-17 Auth Refactor 2.md`
@@ -86,5 +88,15 @@ Print the saved file path and a 1-2 sentence summary of what was captured.
 
 - Omit empty sections entirely
 - Keep the summary concise but informative — this is a reference doc, not a transcript
-- Use Obsidian-compatible markdown (standard markdown, `- [ ]` checkboxes)
+- Use Obsidian-compatible markdown with custom checkboxes:
+  - `- [ ]` Uncompleted task
+  - `- [x]` Completed task
+  - `- [-]` Cancelled
+  - `- [/]` Incomplete (started but not finished)
+  - `- [?]` Question
+  - `- [!]` Important
+  - `- [I]` Idea
+  - `- [p]` Pros
+  - `- [c]` Cons
+- Use the appropriate custom checkbox type based on the semantic meaning of each item (e.g., `[?]` for open questions, `[!]` for critical follow-ups, `[/]` for work that was started but not finished)
 - Do NOT include AI attribution
