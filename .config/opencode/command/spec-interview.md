@@ -20,7 +20,9 @@ $ARGUMENTS
 
 4. **If a file path is provided**: Read the file first to understand what exists before interviewing.
 
-5. **Conduct a thorough interview** asking about:
+5. **Explore the codebase**: Do a deep dive of the codebase. Examine the codebase to understand existing implementations, patterns, and best practices.
+
+6. **Conduct a thorough interview** asking about:
    - Core requirements and goals
    - Technical implementation details
    - UI/UX considerations  
@@ -34,8 +36,6 @@ $ARGUMENTS
    - Dependencies and integrations
    - Migration or rollout strategy
    - Success metrics
-
-6. **Explore the codebase**: Examine the codebase to understand existing implementations, patterns, and best practices.
 
 7. **Ask non-obvious questions**: Go beyond surface-level requirements. Probe into implications, corner cases, and decisions I may not have considered.
 
