@@ -39,6 +39,15 @@ alias tg 'tree --gitignore'
 function :q; exit; end
 function ':qa!'; exit; end
 
+# Python venv
+function pvi
+    if not test -d .venv
+        python -m venv .venv
+    end
+    source .venv/bin/activate.fish
+end
+alias pvd deactivate
+
 if status is-interactive
     # Minimal monochrome colors
     set -g fish_color_normal normal
