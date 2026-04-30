@@ -2,6 +2,7 @@
 description: Reimplement the current branch on a new branch with a clean, narrative-quality git commit history
 argument-hint: [new-branch-name] [ref-to-source-branch]
 allowed-tools: Bash(git:*), Bash(gh pr create:*)
+model: opus
 ---
 
 ## Context

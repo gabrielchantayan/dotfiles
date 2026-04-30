@@ -2,6 +2,7 @@
 description: Commit the current changes with an auto-generated message
 argument-hint: [optional message or context]
 allowed-tools: Bash(git:*)
+model: opus
 ---
 
 ## Context

@@ -5,5 +5,28 @@
       "*": "allow",
       "git push*": "ask"
     }
+  },
+  "agent": {
+    "build": {
+      "color": "#e73e2f"
+    },
+    "build-approve": {
+      "description": "Build agent with approval required for file edits and git commits",
+      "mode": "primary",
+      "color": "#5D9BF4",
+      "permission": {
+        "edit": "ask",
+        "bash": {
+          "git commit*": "ask"
+        }
+      }
+    }
+  },
+  "plugin": ["opencode-claude-auth"],
+  "mcp": {
+    "notion": {
+      "type": "remote",
+      "url": "https://mcp.notion.com/mcp"
+    }
   }
 }

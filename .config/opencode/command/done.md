@@ -1,6 +1,7 @@
 ---
 description: Create a handoff document summarizing this session and save to Obsidian
 allowed-tools: Bash(git:*), Bash(mkdir:*), Write
+model: opus
 ---
 
 ## Context
