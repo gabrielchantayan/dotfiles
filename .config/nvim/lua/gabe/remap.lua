@@ -11,6 +11,33 @@ local function goto_buffer()
 	end
 end
 
+-- Reload every file-backed buffer, skipping scratch/terminal/neo-tree/etc.
+local function refresh_all_buffers()
+	for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+		if
+			vim.api.nvim_buf_is_loaded(bufnr)
+			and vim.bo[bufnr].buftype == ""
+			and vim.api.nvim_buf_get_name(bufnr) ~= ""
+		then
+			vim.api.nvim_buf_call(bufnr, function()
+				vim.cmd("edit!")
+			end)
+		end
+	end
+end
+
+-- Refresh all file buffers, then move to the right window, split horizontally,
+-- resize the new bottom window to 20 lines, and open a terminal in insert mode.
+local function refresh_and_split_right()
+	refresh_all_buffers()
+	vim.cmd("wincmd l")
+	vim.cmd("split")
+	vim.cmd("wincmd j")
+	vim.cmd("resize 20")
+	vim.cmd("terminal")
+	vim.cmd("startinsert")
+end
+
 -- Buffer keymaps
 local buffer_mappings = {
 	{ "<leader>b", group = "Buffers" },
@@ -20,6 +47,7 @@ local buffer_mappings = {
 	{ "<leader>bp", "<cmd>bprevious<cr>", desc = "Previous Buffer" },
 	{ "<leader>bj", goto_buffer, desc = "Jump to buffer by number" },
 	{ "<leader>bcc", "<cmd>%bw!<cr><cmd>Neotree<cr><C-w>l", desc = "Close all buffers" },
+	{ "<leader>bcr", refresh_and_split_right, desc = "Refresh all buffers and split right window" },
 	{ "<leader>ee", "<cmd>e!<cr>", desc = "Refresh current buffer" },
 }
 

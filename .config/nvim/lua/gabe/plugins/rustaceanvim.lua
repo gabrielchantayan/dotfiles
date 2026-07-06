@@ -5,10 +5,20 @@ return {
     "mrcjkb/rustaceanvim",
     version = "^6",
     lazy = false,
+    -- cmp-nvim-lsp must be loadable before rust-analyzer starts so we can
+    -- advertise the richer client capabilities (snippets, additionalTextEdits
+    -- for auto-imports, etc.) to the server.
+    dependencies = { "hrsh7th/cmp-nvim-lsp" },
     init = function()
+        local capabilities = vim.tbl_deep_extend(
+            "force",
+            require("rustaceanvim.config.server").create_client_capabilities(),
+            require("cmp_nvim_lsp").default_capabilities()
+        )
         vim.g.rustaceanvim = {
             -- LSP configuration
             server = {
+                capabilities = capabilities,
                 default_settings = {
                     ["rust-analyzer"] = {
                         -- Enable auto-imports

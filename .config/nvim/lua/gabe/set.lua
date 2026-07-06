@@ -16,3 +16,5 @@ vim.opt.linebreak = true
 vim.opt.incsearch = true -- incremental search
 
 vim.opt.termguicolors = true
+
+vim.opt.shell = "/opt/homebrew/bin/fish" -- use fish for :terminal
