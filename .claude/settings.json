@@ -1,22 +1,48 @@
 {
   "permissions": {
+    "allow": [
+      "mcp__codegraph__*"
+    ],
     "defaultMode": "auto"
   },
-  "model": "claude-fable-5[1m]",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "codegraph prompt-hook"
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "zsh ~/.claude/statusline.sh"
   },
   "enabledPlugins": {
-    "superpowers@superpowers-marketplace": true,
+    "superpowers@superpowers-marketplace": false,
     "frontend-design@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
     "swift-lsp@claude-plugins-official": true,
-    "rust-analyzer-lsp@claude-plugins-official": true
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "gabe-loop@gabe-loop": true
+  },
+  "extraKnownMarketplaces": {
+    "gabe-loop": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/gabe/Programming/gabe-loop"
+      }
+    }
   },
   "syntaxHighlightingDisabled": false,
   "alwaysThinkingEnabled": true,
   "tui": "fullscreen",
+  "autoMemoryEnabled": false,
   "skipDangerousModePermissionPrompt": true,
-  "skipAutoPermissionPrompt": true
+  "preferredNotifChannel": "kitty",
+  "skipAutoPermissionPrompt": true,
+  "model": "claude-fable-5[1m]"
 }

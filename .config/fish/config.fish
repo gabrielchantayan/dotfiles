@@ -25,6 +25,9 @@ fish_add_path $HOME/Documents/Programming/cosa/bin
 # local bin
 fish_add_path $HOME/.local/bin
 
+# kimi
+fish_add_path $HOME/.kimi-code/bin
+
 # Cleanup merged branches
 # Stolen from https://spencer.wtf/2026/02/20/cleaning-up-merged-git-branches-a-one-liner-from-the-cias-leaked-dev-docs.html
 alias ciaclean='git branch --merged origin/main | grep -vE "^\s*(\*|main|master|staging)" | xargs -n 1 git branch -d'

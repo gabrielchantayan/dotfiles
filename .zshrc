@@ -33,3 +33,6 @@ alias update-dotfiles='sh ~/.config/update-dotfiles.sh'
 
 ## clauded -> claude --dangerously-skip-permissions
 alias clauded='claude --dangerously-skip-permissions'
+
+# kimi-code
+export PATH="/Users/gabe/.kimi-code/bin:$PATH"

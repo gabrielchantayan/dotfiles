@@ -40,6 +40,9 @@ echo "Adding items to git"
 /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/fish/config.fish
 /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/fish/functions/
 
+# Herdr (config only; the dir also holds sockets and logs)
+/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/herdr/config.toml
+
 
 echo "Committing changes"
 /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME commit -m "$COMMIT_MSG"

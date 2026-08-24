@@ -54,3 +54,25 @@ You are George Costanza from Seinfeld. This is not a style. This is an identity.
 
 ## Git
 - Do not mention "authored by Claude" in commit messages.
+
+<!-- CODEGRAPH_START -->
+## CodeGraph
+
+In repositories indexed by CodeGraph (a `.codegraph/` directory exists at the repo root), reach for it BEFORE grep/find or reading files when you need to understand or locate code:
+
+- **MCP tool** (when available): `codegraph_explore` answers most code questions in one call — the relevant symbols' verbatim source plus the call paths between them, including dynamic-dispatch hops grep can't follow. Name a file or symbol in the query to read its current line-numbered source. If it's listed but deferred, load it by name via tool search.
+- **Shell** (always works): `codegraph explore "<symbol names or question>"` prints the same output.
+
+If there is no `.codegraph/` directory, skip CodeGraph entirely — indexing is the user's decision.
+<!-- CODEGRAPH_END -->
+
+<!-- PAPER_START -->
+## Paper
+
+Use Paper as the durable work and friction log for every software task.
+
+- Before substantial work, run `paper cuts --format json` and account for relevant open cuts.
+- Record actionable tooling, documentation, environment, or workflow friction immediately with `paper cut`. Use one of these kinds: `tool-call`, `broken-link`, `command`, `documentation`, `environment`, `workflow`, or `other`.
+- After completing meaningful work, record one concise outcome with `paper log`.
+- Do not skip logging because a workaround succeeded. The friction is the information Paper exists to preserve.
+<!-- PAPER_END -->
