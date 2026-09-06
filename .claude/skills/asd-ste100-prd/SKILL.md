@@ -11,7 +11,7 @@ Write clear, testable product and engineering documents. Apply ASD-STE100 contro
 
 Use this skill for PRDs, technical specifications, implementation plans, and acceptance criteria. Preserve the author's intent and the system's actual behavior.
 
-This skill applies ASD-STE100 principles. It cannot claim formal ASD-STE100 conformance without the licensed specification, the licensed dictionary, and a formal checker.
+This skill applies ASD-STE100 principles.
 
 ## Workflow
 
@@ -182,4 +182,3 @@ If the source is ambiguous, preserve the known facts and add an open question. D
 - [ ] Quantities, limits, time periods, and error states are explicit.
 - [ ] Assumptions and open questions are visible.
 - [ ] The rewrite preserves all source decisions and requirement strength.
-- [ ] The document does not claim formal ASD-STE100 conformance.
