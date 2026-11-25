@@ -1,0 +1,590 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>__MAP_TITLE__</title>
+<style>
+/* Layout: one screen. A stat bar on top, then legend | isometric floor | reading panel. One visual language for every map. */
+:root {
+  --ink: #000;
+  --muted: #555;
+  --rule: #b4c0c8;
+  --paper: #f8f9fa;
+  --mist: #dde3e7;
+  --slate: #ccd5db;
+  --steel: #8fa3b0;
+  --shade: rgba(0, 0, 0, 0.06);
+  --red: #b00020;
+  --green: #1a6b4c;
+  --sans: Helvetica, Arial, sans-serif;
+  --mono: Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+html, body { height: 100%; }
+body {
+  background: var(--paper) linear-gradient(168deg, #ccd5db 0%, #dde3e7 30%, #eef1f3 60%, #f8f9fa 100%) fixed;
+  color: var(--ink);
+  font: 11px/normal var(--sans);
+}
+* { box-sizing: border-box; }
+.app {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.bar { display: flex; flex-wrap: wrap; align-items: stretch; border-bottom: 1px solid var(--rule); }
+.stat { padding: 8px 18px 8px 0; margin-right: 18px; border-right: 1px solid var(--rule); }
+.lab { color: var(--muted); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; }
+.stat b { display: block; margin-top: 3px; font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.acts { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-left: auto; padding: 8px 0; }
+button {
+  border: 1px solid var(--ink); border-radius: 0; background: transparent; color: var(--ink);
+  font: 11px/normal var(--sans); padding: 3px 8px; cursor: pointer;
+}
+button:hover:not(:disabled), button[aria-pressed="true"], button[aria-selected="true"] { background: var(--ink); color: #fff; }
+button:focus-visible, .node:focus-visible { outline: 1px solid var(--ink); outline-offset: 3px; }
+.work { display: grid; grid-template-columns: 178px minmax(0, 1fr) 372px; min-height: 0; }
+nav { overflow-y: auto; padding: 13px 13px 20px 0; border-right: 1px solid var(--rule); }
+nav .lab { margin: 13px 0 6px; }
+nav .lab:first-child { margin-top: 0; }
+.it { display: flex; gap: 8px; width: 100%; margin: 0 0 5px; padding: 5px 7px; text-align: left; align-items: baseline; }
+.it span { flex: 1; min-width: 0; }
+.it em { font-style: normal; font-variant-numeric: tabular-nums; color: var(--muted); }
+.it:hover em, .it[aria-selected="true"] em { color: #fff; }
+.stage { position: relative; min-width: 0; min-height: 0; overflow: hidden; }
+svg { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; user-select: none; }
+svg.drag { cursor: grabbing; }
+.zoom { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 5px; }
+.zoom button { width: 24px; height: 24px; padding: 0; background: var(--paper); }
+.zoom button:hover { background: var(--ink); }
+.hint { position: absolute; left: 10px; right: 10px; bottom: 8px; color: var(--muted); pointer-events: none; }
+.hint b { color: var(--ink); font-weight: 500; }
+.crumb { position: absolute; top: 10px; left: 10px; }
+aside { overflow-y: auto; border-left: 1px solid var(--rule); padding: 0 0 26px 16px; min-width: 0; }
+.tabs { display: flex; position: sticky; top: 0; margin-left: -16px; background: var(--paper); border-bottom: 1px solid var(--ink); z-index: 1; }
+.tabs button { flex: 1; border: 0; padding: 7px 0; letter-spacing: 0.14em; text-transform: uppercase; font-size: 9px; }
+aside h1 { margin: 5px 0 4px; font-size: 14px; font-weight: 500; text-wrap: balance; }
+aside .eyebrow { margin-top: 18px; }
+aside .sub { color: var(--muted); margin: 0 0 4px; }
+aside h2 { margin: 22px 0 9px; padding-top: 9px; border-top: 1px solid var(--rule); font-size: 9px; font-weight: normal; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+aside p, aside li { line-height: 1.55; max-width: 62ch; }
+aside p { margin: 0 0 9px; }
+aside ul { margin: 0; padding: 0; list-style: none; }
+aside li { padding: 4px 0; border-bottom: 1px solid var(--rule); }
+aside p b, aside li b { background: var(--ink); color: #fff; font-weight: normal; padding: 0 3px; }
+code, pre { font: 10.5px/1.5 var(--mono); }
+code { overflow-wrap: anywhere; }
+pre { margin: 0 0 9px; padding: 9px 10px; border: 1px solid var(--rule); background: var(--paper); white-space: pre-wrap; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 9px; }
+th, td { padding: 4px 12px 4px 0; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: top; font-weight: normal; }
+th { color: var(--muted); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+.red { color: var(--red); }
+.row { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 9px; }
+.lnk { border: 0; padding: 0; text-decoration: underline dotted; text-align: left; }
+.lnk:hover:not(:disabled) { background: transparent; color: var(--ink); text-decoration: underline; }
+
+/* The drawing */
+.grid { stroke: var(--rule); stroke-width: 0.5; fill: none; }
+.zone { stroke: var(--ink); stroke-width: 0.6; stroke-dasharray: 4 3; fill: var(--shade); }
+.zlab { font: 8px var(--sans); letter-spacing: 0.14em; fill: var(--muted); text-transform: uppercase; }
+.case { stroke: var(--mist); stroke-width: 4.5; fill: none; stroke-linejoin: round; }
+.pad { fill: var(--ink); }
+.ttl { font: 9.5px var(--sans); fill: var(--ink); text-anchor: middle; pointer-events: none; paint-order: stroke; stroke: var(--paper); stroke-width: 3px; stroke-linejoin: round; }
+.node.sel .ttl { fill: #fff; stroke: var(--ink); }
+.num { font: 15px var(--sans); fill: var(--muted); opacity: 0.5; pointer-events: none; }
+.node.sel .num { fill: #fff; }
+.edge, .pad, .case { pointer-events: none; }
+.hitline { stroke: transparent; stroke-width: 12; fill: none; pointer-events: stroke; cursor: pointer; }
+.hitline:hover + .edge { stroke-width: 2.2; }
+.edge { stroke: var(--ink); stroke-width: 0.8; fill: none; stroke-linejoin: round; }
+.edge.dash { stroke-dasharray: 3 3; }
+.edge.hot { stroke-width: 2.2; }
+.f-steel { fill: var(--steel); } .dotfill { fill: var(--ink); }
+.f-top { fill: var(--paper); } .f-left { fill: var(--mist); } .f-right { fill: var(--slate); }
+.hl { stroke: var(--ink); stroke-width: 0.45; fill: none; }
+.out { stroke: var(--ink); stroke-width: 0.9; fill: none; stroke-linejoin: round; }
+.plate { stroke: var(--ink); stroke-width: 1.1; fill: none; }
+.node { cursor: pointer; outline: none; }
+.node:hover .out, .node:focus-visible .out { stroke-width: 1.7; }
+.node.sel .out { stroke-width: 2.2; }
+.node.sel .f-top { fill: var(--ink); }
+.dim { opacity: 0.2; }
+.pk { cursor: pointer; }
+.pk .dot { fill: var(--ink); stroke: var(--paper); stroke-width: 0.8; }
+.pk .hit { fill: transparent; }
+.pk .ring { fill: none; stroke: var(--ink); stroke-width: 1; display: none; }
+.pk:hover .ring, .pk.sel .ring { display: block; }
+.pk.sel .dot { transform: scale(1.5); }
+
+@media (max-width: 880px) {
+  html, body { height: auto; }
+  .app { height: auto; display: block; }
+  .work { display: block; }
+  nav { display: none; }
+  .stage { height: 62svh; border-bottom: 1px solid var(--rule); }
+  aside { border-left: 0; padding-left: 0; }
+  .tabs { margin-left: 0; }
+  .acts { margin-left: 0; }
+}
+</style>
+
+<div class="app">
+  <header class="bar" id="bar">
+    <div class="acts">
+      <button id="play" type="button">Pause the flow</button>
+      <button id="trace" type="button">Trace one step</button>
+      <button id="reset" type="button">Reset view</button>
+    </div>
+  </header>
+  <div class="work">
+    <nav id="nav" aria-label="Structures"></nav>
+    <div class="stage">
+      <svg id="svg" role="img" aria-label="Isometric map of the system">
+        <defs>
+          <pattern id="hd" width="4" height="4" patternUnits="userSpaceOnUse"><circle class="dotfill" cx="1" cy="1" r=".6"/><circle class="dotfill" cx="3" cy="3" r=".6"/></pattern>
+          <pattern id="hh" width="3" height="3.5" patternUnits="userSpaceOnUse"><path class="hl" d="M0 .5H3"/></pattern>
+          <pattern id="hv" width="2.6" height="3" patternUnits="userSpaceOnUse"><path class="hl" d="M.5 0V3"/></pattern>
+          <pattern id="hw" width="1.9" height="3" patternUnits="userSpaceOnUse"><path class="hl" d="M.5 0V3"/></pattern>
+        </defs>
+        <g id="floor"></g><g id="edges"></g><g id="pks"></g><g id="boxes"></g>
+      </svg>
+      <button id="crumb" class="crumb" type="button" hidden>← Come back out</button>
+      <div class="zoom"><button id="zin" type="button" aria-label="Zoom in">+</button><button id="zout" type="button" aria-label="Zoom out">−</button></div>
+      <div id="hint" class="hint"></div>
+    </div>
+    <aside>
+      <div class="tabs" role="tablist">
+        <button id="tab-does" type="button" role="tab">What it does</button>
+        <button id="tab-built" type="button" role="tab">How it's built</button>
+      </div>
+      <div id="panel"></div>
+    </aside>
+  </div>
+</div>
+
+<script>
+/*__MAP_DATA__*/
+/* ---------- Engine. Do not edit below this line for one map. The data above is the map. ---------- */
+for (const n of NODES) n.inside = STEPS[n.id];
+/* Each kind of block has one style. `is` completes the legend sentence "<style> is <kind>". */
+const KIND = {
+  stage: { style: 'box', is: 'a pipeline stage' },
+  child: { style: 'box', is: 'a child process' },
+  support: { style: 'bands', is: 'a supporting system' },
+  table: { style: 'rounded', is: 'a database table' },
+  store: { style: 'rounded', is: 'an object store' },
+  state: { style: 'rounded', is: 'state in memory' },
+  queue: { style: 'stack', is: 'a queue' },
+  scheduler: { style: 'stack', is: 'a scheduler' },
+  ui: { style: 'dots', is: 'an operator page' },
+  external: { style: 'steel', is: 'an external service' },
+  model: { style: 'steel', is: 'an AI model' },
+};
+const STYLE_NAME = { box: 'A hatched block', bands: 'A block with horizontal lines', rounded: 'A stack of rounded slabs', stack: 'A block of stacked plates', dots: 'A dotted slab', steel: 'A steel block' };
+const NS = 'http://www.w3.org/2000/svg';
+const $ = (s) => document.querySelector(s);
+const el = (t, a, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+const U = 24, CX = 0.866 * U, CY = 0.5 * U;
+const P = (x, y, z = 0) => [(x - y) * CX, (x + y) * CY - z * U];
+const pts = (a) => a.map((p) => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const byId = Object.fromEntries(NODES.map((n) => [n.id, n]));
+const svg = $('#svg');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const state = { scene: 'main', sel: undefined, tab: 'does', playing: !reduce, trace: 0 };
+let scene, vb = { x: 0, y: 0, w: 100, h: 100 }, home;
+
+const isoM = (p) => 'matrix(0.866 0.5 -0.866 0.5 ' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + ')';
+const wrap = (s, max) => s.split(' ').reduce((a, w) => {
+  const l = a[a.length - 1];
+  if (l && (l + ' ' + w).length <= max) a[a.length - 1] = l + ' ' + w; else a.push(w);
+  return a;
+}, []);
+
+function makeFlow(f) {
+  const sp = f.path.map((p) => P(p[0], p[1]));
+  const cum = [0];
+  for (let k = 1; k < sp.length; k++) cum.push(cum[k - 1] + Math.hypot(sp[k][0] - sp[k - 1][0], sp[k][1] - sp[k - 1][1]));
+  return { ...f, sp, cum, len: cum[cum.length - 1] };
+}
+function pointAt(f, t) {
+  const d = t * f.len;
+  let k = 1;
+  while (k < f.cum.length - 1 && f.cum[k] < d) k++;
+  const r = (d - f.cum[k - 1]) / (f.cum[k] - f.cum[k - 1] || 1);
+  return [f.sp[k - 1][0] + (f.sp[k][0] - f.sp[k - 1][0]) * r, f.sp[k - 1][1] + (f.sp[k][1] - f.sp[k - 1][1]) * r];
+}
+function packets(flows) {
+  const out = [];
+  for (const f of flows) {
+    if (f.pk) out.push({ id: f.id, f, pk: f.pk, dir: 1, from: f.a, to: f.b });
+    if (f.rk) out.push({ id: f.id + '~', f, pk: f.rk, dir: -1, from: f.b, to: f.a });
+  }
+  out.forEach((k, i) => { k.t = (i * 0.37) % 1; });
+  return out;
+}
+function mainScene() {
+  const flows = FLOWS.map(makeFlow);
+  return { nodes: NODES, flows, pks: packets(flows), zones: ZONES };
+}
+/* The data that reaches `id` and the data that leaves it, read from `FLOWS`. */
+function neighbours(id) {
+  const ins = [], outs = [];
+  for (const f of FLOWS) {
+    if (f.b === id) ins.push({ id: f.a, pk: f.pk, f });
+    if (f.a === id && f.rk) ins.push({ id: f.b, pk: f.rk, f });
+    if (f.a === id) outs.push({ id: f.b, pk: f.pk, f });
+    if (f.b === id && f.rk) outs.push({ id: f.a, pk: f.rk, f });
+  }
+  return { ins, outs };
+}
+/* The traces between a column of n blocks and one face of the step at grid row y0. Block j has its centre at `yc`, its pad at `py`, and turns `off` units from the face. */
+function fan(n, y0) {
+  const mid = (n - 1) / 2;
+  const rows = Array.from({ length: n }, (_, j) => ({ yc: y0 + 1.5 + (j - mid) * 4.2, py: y0 + 2.7 - (n - 1 - j) * 0.45 }));
+  rows.filter((r) => r.yc < r.py).forEach((r, k) => { r.off = 1.2 + 0.5 * k; });
+  rows.filter((r) => r.yc >= r.py).reverse().forEach((r, k) => { r.off = 1.2 + 0.5 * k; });
+  return rows;
+}
+function innerScene(parent) {
+  const W = 4, GAP = 7.5, OX = 3 * GAP + W + 8, BW = 4;
+  const steps = parent.inside.map((s, i) => ({ id: parent.id + '/' + i, num: i + 1, name: s.n, desc: s.d, why: s.why, files: [s.f], g: 'step', x: (i % 4) * GAP, y: Math.floor(i / 4) * 8, w: W, d: 3, h: 0.5 }));
+  const pkOf = (i) => parent.inside[i].pk || parent.pk;
+  const flows = [];
+  steps.forEach((n, i) => {
+    const m = steps[i + 1], y = n.y + 2.5;
+    if (!m) return;
+    const path = m.y === n.y ? [[n.x + W, y], [m.x, y]] : [[n.x + W, y], [28, y], [28, n.y + 5.5], [-0.75, n.y + 5.5], [-0.75, m.y + 2.5], [0, m.y + 2.5]];
+    flows.push({ id: 'st' + i, a: n.id, b: m.id, pk: pkOf(i), path });
+  });
+  const { ins, outs } = neighbours(parent.id);
+  const port = (side, nb, x, yc) => ({ id: side + ':' + nb.id, port: nb.id, name: byId[nb.id].name, kind: byId[nb.id].kind, g: 'port', x, y: yc - 1.25, w: BW, d: 2.5, h: 0.5 });
+  const first = steps[0], lastStep = steps[steps.length - 1], X = lastStep.x + W;
+  const inPorts = fan(ins.length, first.y).map((r, j) => {
+    const p = port('in', ins[j], -8 - BW, r.yc);
+    flows.push({ id: p.id, a: p.id, b: first.id, pk: ins[j].pk, dash: ins[j].f.dash, what: ins[j].f.what, path: [[-8, r.yc], [-r.off, r.yc], [-r.off, r.py], [0, r.py]] });
+    return p;
+  });
+  const outPorts = fan(outs.length, lastStep.y).map((r, j) => {
+    const p = port('out', outs[j], OX, r.yc);
+    flows.push({ id: p.id, a: lastStep.id, b: p.id, pk: outs[j].pk, dash: outs[j].f.dash, what: outs[j].f.what, path: [[X, r.py], [OX - r.off, r.py], [OX - r.off, r.yc], [OX, r.yc]] });
+    return p;
+  });
+  const made = flows.map(makeFlow), rows = Math.ceil(steps.length / 4);
+  return { parent, nodes: [...inPorts, ...steps, ...outPorts], flows: made, pks: packets(made), zones: [{ x0: -3, y0: -1.5, x1: 29, y1: rows * 8 - 3.5, label: parent.name + (parent.proc ? ' · ' + parent.proc : '') }] };
+}
+
+const FILL = { hatch: ['hv', 'hw'], dots: ['hd', 'hd'], bands: ['hh', 'hh'] };
+/* Draws a rectangular prism on the footprint of `n`, from height z0 to z1. `side` is the fill of the two side faces. */
+function prism(g, n, z0, z1, side) {
+  const { x, y, w, d } = n;
+  const top = [P(x, y, z1), P(x + w, y, z1), P(x + w, y + d, z1), P(x, y + d, z1)];
+  const left = [P(x, y + d, z1), P(x + w, y + d, z1), P(x + w, y + d, z0), P(x, y + d, z0)];
+  const right = [P(x + w, y, z1), P(x + w, y + d, z1), P(x + w, y + d, z0), P(x + w, y, z0)];
+  el('polygon', { class: side === 'steel' ? 'f-steel' : 'f-left', points: pts(left) }, g);
+  el('polygon', { class: side === 'steel' ? 'f-steel' : 'f-right', points: pts(right) }, g);
+  el('polygon', { class: 'f-top', points: pts(top) }, g);
+  if (FILL[side]) {
+    el('polygon', { fill: 'url(#' + FILL[side][0] + ')', points: pts(left) }, g);
+    el('polygon', { fill: 'url(#' + FILL[side][1] + ')', points: pts(right) }, g);
+  }
+  for (const f of [left, right, top]) el('polygon', { class: 'out', points: pts(f) }, g);
+}
+/* Draws a slab with rounded corners on the footprint of `n`, from height z0 to z1. */
+function roundedSlab(g, n, z0, z1) {
+  const { x, y, w, d } = n, r = 0.7, foot = [];
+  /* Each corner: the centre of its arc and the angle where the arc starts. The corners go from the back, through the right and the front, to the left. */
+  const corners = [[x + w - r, y + r, -Math.PI / 2], [x + w - r, y + d - r, 0], [x + r, y + d - r, Math.PI / 2], [x + r, y + r, Math.PI]];
+  for (const [cx, cy, a0] of corners) for (let k = 0; k <= 6; k++) foot.push([cx + r * Math.cos(a0 + (k * Math.PI) / 12), cy + r * Math.sin(a0 + (k * Math.PI) / 12)]);
+  /* The viewer sees the side from the middle of the right corner to the middle of the left corner. */
+  const front = (z) => foot.slice(3, 18).map((p) => P(p[0], p[1], z));
+  const body = [...front(z0), ...front(z1).toReversed()];
+  const top = foot.map((p) => P(p[0], p[1], z1));
+  el('polygon', { class: 'f-left', points: pts(body) }, g);
+  el('polygon', { class: 'f-top', points: pts(top) }, g);
+  for (const f of [body, top]) el('polygon', { class: 'out', points: pts(f) }, g);
+}
+function drawNode(n, layer) {
+  const { x, y, w, d, h } = n, st = (KIND[n.kind] || KIND.stage).style;
+  const g = el('g', { class: 'node', 'data-id': n.id, tabindex: 0, role: 'button', 'aria-label': n.name }, layer);
+  if (st === 'rounded') for (let i = 0; i < 3; i++) roundedSlab(g, n, (i * h) / 3, ((i + 1) * h) / 3);
+  else prism(g, n, 0, h, st === 'box' ? 'hatch' : st);
+  if (st === 'stack') for (let z = 0.3; z < h - 0.05; z += 0.3) el('polyline', { class: 'plate', points: pts([P(x, y + d, z), P(x + w, y + d, z), P(x + w, y, z)]) }, g);
+  const lines = wrap(n.name, Math.floor((w * U - 8) / 4.9));
+  const c = P(x + w / 2, y + d / 2, h);
+  const t = el('text', { class: 'ttl' }, g);
+  lines.forEach((s, i) => { el('tspan', { x: c[0].toFixed(1), y: (c[1] + (i - (lines.length - 1) / 2) * 10 + 3).toFixed(1) }, t).textContent = s; });
+  if (n.num) el('text', { class: 'num', transform: isoM(P(x + 0.25, y + 0.95, h)) }, g).textContent = n.num;
+  n.box = [P(x, y + d), P(x + w, y), P(x, y, h), P(x + w, y + d)];
+}
+
+function build() {
+  scene = state.scene === 'main' ? mainScene() : innerScene(byId[state.scene]);
+  for (const id of ['floor', 'edges', 'pks', 'boxes']) $('#' + id).replaceChildren();
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  const grow = (p) => { x0 = Math.min(x0, p[0]); y0 = Math.min(y0, p[1]); x1 = Math.max(x1, p[0]); y1 = Math.max(y1, p[1]); };
+  const gx = [1e9, -1e9], gy = [1e9, -1e9];
+  for (const n of scene.nodes) { gx[0] = Math.min(gx[0], n.x); gx[1] = Math.max(gx[1], n.x + n.w); gy[0] = Math.min(gy[0], n.y); gy[1] = Math.max(gy[1], n.y + n.d); }
+  const fx0 = Math.floor(gx[0] / 4) * 4 - 4, fx1 = Math.ceil(gx[1] / 4) * 4 + 4, fy0 = Math.floor(gy[0] / 4) * 4 - 4, fy1 = Math.ceil(gy[1] / 4) * 4 + 4;
+  let d = '';
+  for (let x = fx0; x <= fx1; x += 4) d += 'M' + P(x, fy0) + 'L' + P(x, fy1);
+  for (let y = fy0; y <= fy1; y += 4) d += 'M' + P(fx0, y) + 'L' + P(fx1, y);
+  el('path', { class: 'grid', d }, $('#floor'));
+  for (const z of scene.zones) {
+    const c = [P(z.x0, z.y0), P(z.x1, z.y0), P(z.x1, z.y1), P(z.x0, z.y1)];
+    el('polygon', { class: 'zone', points: pts(c) }, $('#floor'));
+    el('text', { class: 'zlab', transform: isoM(P(z.lx ?? z.x0 + 0.3, z.back ? z.y0 - 0.35 : z.y1 + 0.75)) }, $('#floor')).textContent = z.label;
+    c.forEach(grow); grow(P(z.x0, z.y1 + 1));
+  }
+  for (const f of scene.flows) {
+    const p = pts(f.sp);
+    f.g = el('g', {}, $('#edges'));
+    el('polyline', { class: 'case', points: p }, f.g);
+    el('polyline', { class: 'hitline', 'data-flow': f.id, points: p }, f.g);
+    f.line = el('polyline', { class: 'edge' + (f.dash ? ' dash' : ''), points: p }, f.g);
+    for (const e of [f.sp[0], f.sp[f.sp.length - 1]]) el('circle', { class: 'pad', cx: e[0].toFixed(1), cy: e[1].toFixed(1), r: 2.2 }, f.g);
+    f.sp.forEach(grow);
+  }
+  for (const k of scene.pks) {
+    k.el = el('g', { class: 'pk', 'data-pk': k.id }, $('#pks'));
+    el('circle', { class: 'hit', r: 11 }, k.el);
+    el('circle', { class: 'ring', r: 8 }, k.el);
+    el('polygon', { class: 'dot', points: '0,-4.2 7,0 0,4.2 -7,0' }, k.el);
+  }
+  for (const n of scene.nodes.slice().sort((a, b) => a.x + a.w + a.y + a.d - (b.x + b.w + b.y + b.d))) { drawNode(n, $('#boxes')); n.box.forEach(grow); }
+  const pad = 30;
+  home = { x: x0 - pad, y: y0 - pad, w: x1 - x0 + pad * 2, h: y1 - y0 + pad * 2 };
+  $('#crumb').hidden = state.scene === 'main';
+  place();
+  renderNav(); renderPanel(); mark();
+}
+
+function place() {
+  for (const k of scene.pks) {
+    const p = pointAt(k.f, k.dir > 0 ? k.t : 1 - k.t);
+    k.el.setAttribute('transform', 'translate(' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + ')');
+  }
+}
+let last = 0;
+function frame(now) {
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  if (state.playing) { for (const k of scene.pks) k.t = (k.t + (dt * 38) / k.f.len) % 1; place(); }
+  requestAnimationFrame(frame);
+}
+
+/* ---------- Camera ---------- */
+const setVB = (v) => { vb = v; svg.setAttribute('viewBox', [v.x, v.y, v.w, v.h].map((n) => n.toFixed(1)).join(' ')); };
+let anim = 0;
+function flyTo(target, done) {
+  cancelAnimationFrame(anim);
+  if (reduce) { setVB(target); if (done) done(); return; }
+  const from = vb, t0 = performance.now();
+  const step = (now) => {
+    const k = Math.min(1, (now - t0) / 320), e = 1 - (1 - k) ** 3;
+    setVB({ x: from.x + (target.x - from.x) * e, y: from.y + (target.y - from.y) * e, w: from.w + (target.w - from.w) * e, h: from.h + (target.h - from.h) * e });
+    if (k < 1) anim = requestAnimationFrame(step); else if (done) done();
+  };
+  anim = requestAnimationFrame(step);
+}
+const unit = () => { const r = svg.getBoundingClientRect(); return Math.max(vb.w / r.width, vb.h / r.height); };
+function toSvg(cx, cy) { const m = svg.getScreenCTM().inverse(); return [m.a * cx + m.c * cy + m.e, m.b * cx + m.d * cy + m.f]; }
+function zoomAt(f, cx, cy) {
+  const w = Math.min(home.w * 2.5, Math.max(120, vb.w * f)), k = w / vb.w, [px, py] = toSvg(cx, cy);
+  setVB({ x: px - (px - vb.x) * k, y: py - (py - vb.y) * k, w, h: vb.h * k });
+}
+const zoomMid = (f) => { const r = svg.getBoundingClientRect(); zoomAt(f, r.left + r.width / 2, r.top + r.height / 2); };
+
+let drag;
+svg.addEventListener('pointerdown', (e) => { drag = { x: e.clientX, y: e.clientY, vx: vb.x, vy: vb.y, moved: false }; });
+addEventListener('pointermove', (e) => {
+  if (!drag) return;
+  const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+  if (!drag.moved && Math.hypot(dx, dy) < 4) return;
+  drag.moved = true; svg.classList.add('drag'); cancelAnimationFrame(anim);
+  const u = unit(); setVB({ ...vb, x: drag.vx - dx * u, y: drag.vy - dy * u });
+});
+let suppress = false;
+addEventListener('pointerup', () => { suppress = Boolean(drag && drag.moved); drag = undefined; svg.classList.remove('drag'); });
+svg.addEventListener('wheel', (e) => { e.preventDefault(); zoomAt(Math.exp(e.deltaY * 0.0016), e.clientX, e.clientY); }, { passive: false });
+
+/* ---------- Selection ---------- */
+const nodeOf = (id) => scene.nodes.find((n) => n.id === id);
+const pkOf = (id) => scene.pks.find((k) => k.id === id);
+const flowOf = (id) => scene.flows.find((f) => f.id === id);
+const nameOf = (id) => (nodeOf(id) ? nodeOf(id).name : 'outside');
+const flowName = (f) => nameOf(f.a) + (f.rk ? ' ↔ ' : ' → ') + nameOf(f.b);
+function select(sel) { state.sel = sel; renderPanel(); mark(); }
+function mark() {
+  const s = state.sel;
+  const node = s && s.t === 'node' ? s.id : undefined;
+  const line = s && (s.t === 'flow' ? flowOf(s.id) : s.t === 'pk' ? pkOf(s.id)?.f : undefined);
+  /* The lines that the selection touches, and the blocks at the ends of those lines. */
+  const lines = line ? [line] : scene.flows.filter((f) => f.a === node || f.b === node);
+  const blocks = new Set([node, ...lines.flatMap((f) => [f.a, f.b])]);
+  const fade = Boolean(node || line);
+  for (const g of svg.querySelectorAll('.node')) {
+    g.classList.toggle('sel', g.dataset.id === node);
+    g.classList.toggle('dim', fade && !blocks.has(g.dataset.id));
+  }
+  for (const f of scene.flows) {
+    f.line.classList.toggle('hot', f === line);
+    f.g.classList.toggle('dim', fade && !lines.includes(f));
+  }
+  for (const k of scene.pks) {
+    k.el.classList.toggle('sel', Boolean(s && s.t === 'pk' && s.id === k.id));
+    k.el.classList.toggle('dim', fade && !lines.includes(k.f));
+  }
+  for (const b of document.querySelectorAll('.it[data-id]')) b.setAttribute('aria-selected', String(b.dataset.id === node));
+}
+/* Opens the inside of the block `id`. */
+function enter(id) {
+  const n = byId[id];
+  if (!n || !n.inside || state.scene === id) return;
+  state.scene = id; state.sel = undefined; build(); setVB(home);
+}
+/* Opens the block that the scene node `sceneId` shows. A port shows a neighbour block. */
+function enterNode(sceneId) { const n = nodeOf(sceneId); if (n) enter(n.port || n.id); }
+function comeOut() {
+  if (state.scene === 'main') { select(undefined); return; }
+  const id = state.scene;
+  state.scene = 'main'; state.sel = { t: 'node', id }; build(); setVB(home);
+}
+
+svg.addEventListener('click', (e) => {
+  if (suppress) { suppress = false; return; }
+  const pk = e.target.closest('[data-pk]'), nd = e.target.closest('[data-id]'), fl = e.target.closest('[data-flow]');
+  select(pk ? { t: 'pk', id: pk.dataset.pk } : nd ? { t: 'node', id: nd.dataset.id } : fl ? { t: 'flow', id: fl.dataset.flow } : undefined);
+});
+svg.addEventListener('dblclick', (e) => { const nd = e.target.closest('[data-id]'); if (nd) enterNode(nd.dataset.id); });
+const HINT = 'double-click a block to enter · ← back · click a dot to inspect · drag to pan · scroll to zoom';
+svg.addEventListener('pointerover', (e) => {
+  const pk = e.target.closest('[data-pk]'), nd = e.target.closest('[data-id]');
+  if (pk) { const p = PK[pkOf(pk.dataset.pk).pk]; $('#hint').textContent = p.title + ' · ' + p.table; }
+  else if (nd) { const n = nodeOf(nd.dataset.id); $('#hint').textContent = n.name + ((byId[n.port || n.id] || {}).inside && (n.port || n.id) !== state.scene ? ' · double-click to enter' : ''); }
+  else if (e.target.dataset.flow) $('#hint').textContent = flowName(flowOf(e.target.dataset.flow)) + ' · click to read';
+  else $('#hint').textContent = HINT;
+});
+svg.addEventListener('keydown', (e) => { const nd = e.target.closest('[data-id]'); if (nd && e.key === 'Enter') { e.preventDefault(); enterNode(nd.dataset.id); } });
+
+addEventListener('keydown', (e) => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const cur = state.sel && state.sel.t === 'node' ? scene.nodes.findIndex((n) => n.id === state.sel.id) : -1;
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    const n = scene.nodes.length, i = cur < 0 ? 0 : (cur + (e.key === 'ArrowDown' ? 1 : n - 1)) % n;
+    select({ t: 'node', id: scene.nodes[i].id });
+    const b = document.querySelector('.it[aria-selected="true"]'); if (b) b.scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'ArrowRight' && cur >= 0) { e.preventDefault(); enterNode(scene.nodes[cur].id); }
+  else if (e.key === 'ArrowLeft' || e.key === 'Escape') { e.preventDefault(); comeOut(); }
+});
+
+/* ---------- Legend and panel ---------- */
+function renderNav() {
+  const item = (n) => { const steps = (byId[n.port || n.id] || {}).inside; return '<button class="it" type="button" data-id="' + n.id + '"><span>' + esc(n.name) + '</span><em>' + (steps ? steps.length : '') + '</em></button>'; };
+  const section = (label, list) => (list.length ? '<div class="lab">' + label + '</div>' + list.map(item).join('') : '');
+  const of = (g, side) => scene.nodes.filter((n) => n.g === g && (!side || n.id.startsWith(side)));
+  $('#nav').innerHTML = scene.parent
+    ? '<button class="it" type="button" data-out="1"><span>← The system</span></button>' + section('Comes from', of('port', 'in:')) + section('Steps of ' + esc(scene.parent.name), of('step')) + section('Goes to', of('port', 'out:'))
+    : GROUPS.map(([g, label]) => section(label, of(g))).join('');
+}
+$('#nav').addEventListener('click', (e) => {
+  const b = e.target.closest('.it'); if (!b) return;
+  if (b.dataset.out) comeOut(); else select({ t: 'node', id: b.dataset.id });
+});
+$('#nav').addEventListener('dblclick', (e) => { const b = e.target.closest('.it[data-id]'); if (b) enterNode(b.dataset.id); });
+
+const paras = (a) => (a || []).map((p) => '<p>' + p + '</p>').join('');
+/* The list "Data in and out" of block `id`: one entry for each packet, and one entry for each line that has no packet. */
+function flowsOf(id) {
+  const item = (attr, label, out, other) => '<li><button class="lnk" type="button" ' + attr + '>' + esc(label) + '</button> <span class="sub">' + (out ? 'to ' : 'from ') + esc(nameOf(other)) + '</span></li>';
+  return scene.flows.filter((f) => f.a === id || f.b === id).map((f) => {
+    const dots = scene.pks.filter((k) => k.f === f);
+    if (dots.length === 0) return item('data-line="' + f.id + '"', 'Connection', f.a === id, f.a === id ? f.b : f.a);
+    return dots.map((k) => item('data-sel="' + k.id + '"', PK[k.pk].title, k.from === id, k.from === id ? k.to : k.from)).join('');
+  }).join('');
+}
+function nodePanel(n) {
+  const shown = n.port ? byId[n.port] : n;
+  const group = n.g === 'step' ? 'Step ' + n.num + ' of ' + scene.parent.inside.length + ' · ' + scene.parent.name
+    : n.port ? (n.id.startsWith('in:') ? 'Comes from' : 'Goes to')
+    : (GROUPS.find((g) => g[0] === n.g) || [])[1] + (n.proc ? ' · ' + n.proc + ' process' : '');
+  const files = '<h2>Files</h2><ul>' + (shown.files || []).map((f) => '<li><code>' + esc(f) + '</code></li>').join('') + '</ul>';
+  let h = '<div class="lab eyebrow">' + esc(group) + '</div><h1>' + esc(shown.name) + '</h1>';
+  if (shown.inside && shown.id !== state.scene) h += '<div class="row"><button type="button" data-in="' + shown.id + '">Enter · ' + shown.inside.length + ' steps</button></div>';
+  if (n.g === 'step') h += '<h2>What it does</h2><p>' + n.desc + '</p><h2>Why it exists</h2><p>' + n.why + '</p>' + files;
+  else if (state.tab === 'does') {
+    h += paras(shown.does);
+    if (shown.inside) h += '<h2>Steps</h2><ul>' + shown.inside.map((s, i) => '<li>' + (i + 1) + '. ' + esc(s.n) + '</li>').join('') + '</ul>';
+  } else h += paras(shown.built) + files;
+  const fl = flowsOf(n.id);
+  if (fl) h += '<h2>Data in and out</h2><ul>' + fl + '</ul>';
+  return h;
+}
+function pkPanel(k) {
+  const p = PK[k.pk], a = nodeOf(k.from), b = nodeOf(k.to);
+  return '<div class="lab eyebrow">Data packet · ' + esc(a ? a.name : 'outside') + ' → ' + esc(b ? b.name : 'outside') + '</div><h1>' + esc(p.title) + '</h1>'
+    + '<h2>' + esc(p.table) + '</h2><pre>' + esc(JSON.stringify(p.data, undefined, 2)) + '</pre><p class="sub">' + esc(p.src) + '</p>';
+}
+function flowPanel(f) {
+  const carried = scene.pks.filter((k) => k.f === f).map((k) => '<li><button class="lnk" type="button" data-sel="' + k.id + '">' + esc(PK[k.pk].title) + '</button> <span class="sub">' + esc(nameOf(k.from)) + ' → ' + esc(nameOf(k.to)) + ' · ' + esc(PK[k.pk].table) + '</span></li>').join('');
+  return '<div class="lab eyebrow">Connection' + (f.dash ? ' · conditional' : '') + '</div><h1>' + esc(flowName(f)) + '</h1>'
+    + (f.what ? '<p>' + esc(f.what) + '</p>' : '') + (carried ? '<h2>Carries</h2><ul>' + carried + '</ul>' : '');
+}
+const orList = (a) => (a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' or ' + a[a.length - 1]);
+/* The legend lists only the styles that this map uses. */
+function legend() {
+  const styles = Object.keys(STYLE_NAME).map((style) => {
+    const kinds = Object.keys(KIND).filter((k) => KIND[k].style === style && NODES.some((n) => n.kind === k)).map((k) => KIND[k].is);
+    return kinds.length ? '<li>' + STYLE_NAME[style] + ' is ' + orList(kinds) + '.</li>' : '';
+  });
+  return styles.join('')
+    + (ZONES.length ? '<li>A dashed outline shows the process that owns the blocks.</li>' : '')
+    + (FLOWS.some((f) => f.dash) ? '<li>A dashed line is a conditional connection.</li>' : '')
+    + (Object.keys(PK).length ? '<li>A dot is one real row from the ' + esc(META.snapshot) + '.</li>' : '');
+}
+function overviewPanel() {
+  const head = '<div class="lab eyebrow">' + esc(META.repo) + '</div><h1>' + esc(OVERVIEW.title) + '</h1>';
+  if (state.tab === 'built') return head + OVERVIEW.built;
+  return head + '<h2>Pipeline</h2><ul>' + OVERVIEW.pipeline.map((p) => '<li>' + p + '</li>').join('') + '</ul>'
+    + '<h2>Legend</h2><ul>' + legend() + '</ul>'
+    + '<h2>Controls</h2><ul><li>Double-click a block to enter it.</li><li>Press ← or Esc to go back.</li><li>Click a block, a line or a dot to read it.</li>'
+    + (TRACE.length ? '<li>Click "Trace one step" to follow ' + esc(META.trace) + '.</li>' : '') + '</ul>';
+}
+function renderPanel() {
+  const s = state.sel;
+  let h;
+  if (s && s.t === 'pk' && pkOf(s.id)) h = pkPanel(pkOf(s.id));
+  else if (s && s.t === 'flow' && flowOf(s.id)) h = flowPanel(flowOf(s.id));
+  else if (s && s.t === 'node' && nodeOf(s.id)) h = nodePanel(nodeOf(s.id));
+  else if (scene.parent) h = nodePanel(scene.parent);
+  else h = overviewPanel();
+  $('#panel').innerHTML = h;
+  $('#tab-does').setAttribute('aria-selected', String(state.tab === 'does'));
+  $('#tab-built').setAttribute('aria-selected', String(state.tab === 'built'));
+}
+$('#panel').addEventListener('click', (e) => {
+  const a = e.target.closest('[data-sel]'), b = e.target.closest('[data-in]'), c = e.target.closest('[data-line]');
+  if (a) select({ t: 'pk', id: a.dataset.sel }); else if (b) enter(b.dataset.in); else if (c) select({ t: 'flow', id: c.dataset.line });
+});
+$('#tab-does').addEventListener('click', () => { state.tab = 'does'; renderPanel(); });
+$('#tab-built').addEventListener('click', () => { state.tab = 'built'; renderPanel(); });
+
+/* ---------- Controls ---------- */
+function setPlaying(on) { state.playing = on; $('#play').textContent = on ? 'Pause the flow' : '▶ Resume the flow'; }
+$('#play').addEventListener('click', () => setPlaying(!state.playing));
+$('#trace').addEventListener('click', () => {
+  if (state.scene !== 'main') { state.scene = 'main'; build(); setVB(home); }
+  setPlaying(false);
+  const k = pkOf(TRACE[state.trace % TRACE.length]); state.trace++;
+  k.t = 0.5; place(); select({ t: 'pk', id: k.id });
+});
+$('#reset').addEventListener('click', () => flyTo(home));
+$('#crumb').addEventListener('click', comeOut);
+$('#zin').addEventListener('click', () => zoomMid(0.75));
+$('#zout').addEventListener('click', () => zoomMid(1.33));
+
+$('#bar').insertAdjacentHTML('afterbegin', [['Repository', META.repo], ...META.facts].map(([k, v]) => '<div class="stat"><div class="lab">' + esc(k) + '</div><b>' + esc(v) + '</b></div>').join(''));
+$('#trace').hidden = TRACE.length === 0;
+build(); setVB(home); setPlaying(state.playing); $('#hint').textContent = HINT;
+requestAnimationFrame((t) => { last = t; frame(t); });
+</script>
