@@ -1,0 +1,2 @@
+# Herdr writes the type files into each mod.
+*.d.ts

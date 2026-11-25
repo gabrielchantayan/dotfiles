@@ -43,6 +43,18 @@ echo "Adding items to git"
 # Herdr (config only; the dir also holds sockets and logs)
 /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/herdr/config.toml
 
+# Herdr app (user files only; Herdr writes the other files)
+/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/herdr-app/.gitignore
+/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/herdr-app/keys.json
+/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/herdr-app/settings.json
+/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/herdr-app/programs.json
+/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/herdr-app/layouts/my-main.json
+/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/herdr-app/themes/
+/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/herdr-app/mods/agenttrail/
+/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/herdr-app/mods/auto-title/
+/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/herdr-app/mods/my-menu/
+/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add ~/.config/herdr-app/mods/my-spaces/
+
 
 echo "Committing changes"
 /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME commit -m "$COMMIT_MSG"
